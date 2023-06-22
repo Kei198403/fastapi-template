@@ -1,0 +1,54 @@
+// https://containers.dev/implementors/json_reference/
+{
+	"name": "Python3 fastapi",
+	// ホスト名とコンテナ名を指定
+	"runArgs": [
+		// コンテナ名
+		"--name",
+		"vsc-fastapi_template",
+		// ホスト名
+		"-h",
+		"python-dev"
+	],
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	// gitリポジトリがなくてもマウントできるように
+	"mounts": [
+		"source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+	],
+	"remoteEnv": {
+		"PYTHONPATH": "app",
+		"PORT": "8000",
+		"GUNICORN_CONF": "/workspace/gunicorn_conf.py",
+		"FAST_API_ENV": "development"
+	},
+	"workspaceFolder": "/workspace",
+	"remoteUser": "vscode",
+	// [Linux]
+	"updateRemoteUserUID": true,
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"python.showStartPage": false,
+				"terminal.integrated.defaultProfile.linux": "bash",
+				"workbench.editor.enablePreview": false
+			},
+			"extensions": [
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"njpwerner.autodocstring",
+				"donjayamanne.githistory",
+				"formulahendry.code-runner",
+				"njqdev.vscode-python-typehint",
+				"ninoseki.vscode-pylens",
+				"ms-python.autopep8",
+				"ms-python.flake8",
+				"kenhowardpdx.vscode-gist",
+				"github.copilot",
+				"gruntfuggly.todo-tree"
+			]
+		}
+	},
+	"postCreateCommand": "bash /workspace/.devcontainer/init.sh"
+}

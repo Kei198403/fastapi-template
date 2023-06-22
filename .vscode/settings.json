@@ -1,0 +1,83 @@
+{
+    // Pylance
+    "python.languageServer": "Pylance",
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportMissingImports": "none", // import文の警告を無効化
+        "reportGeneralTypeIssues": "information", // 型の警告を無効化。SQLAlchemyの型チェックはmypyに任せる。その場合、SQLAlchemy用プラグインを有効化すること。
+        "reportOptionalMemberAccess": "none" // メンバーへのアクセスの警告を無効化。Noneにメソッドが無いというような警告を無視。
+    },
+    "python.defaultInterpreterPath": "/workspace/.venv/bin/python",
+    "[python]": {
+        "editor.tabSize": 4,
+        // ファイル保存時にフォーマット
+        "editor.formatOnSave": true,
+        // ファイルの文字コード指定
+        "files.encoding": "utf8"
+    },
+    // フォーマッター設定(autopep8)
+    "python.formatting.provider": "autopep8", // autopep8用設定
+    "python.formatting.autopep8Path": "/workspace/.venv/bin/autopep8",
+    "autopep8.args": [
+        "--max-line-length",
+        "150",
+        "--ignore",
+        ".venv",
+        "--verbose"
+    ],
+    // Linting設定
+    "python.linting.enabled": true,
+    "python.linting.lintOnSave": true,
+    // Linting設定(flake8)
+    "python.linting.flake8Enabled": true,
+    "python.linting.flake8Path": "/workspace/.venv/bin/flake8",
+    "python.linting.flake8Args": [
+        "--max-line-length",
+        "150"
+    ],
+    // Linting設定(pylint)
+    "python.linting.pylintEnabled": false,
+    "python.linting.pylintPath": "/workspace/.venv/bin/pylint",
+    // Linting設定(mypy)
+    "python.linting.mypyPath": "/workspace/.venv/bin/mypy",
+    "python.formatting.autopep8Args": [
+        "--max-line-length",
+        "120",
+    ],
+    "python.linting.mypyEnabled": true,
+    "python.linting.mypyArgs": [
+        "--ignore-missing-imports", // サードパーティ製モジュールの型アノテーションチェックを無視
+        "--follow-imports=silent",  // インポート元の型チェックを無視
+        "--disallow-untyped-defs", // 関数定義時の型アノテーション強制
+        "--show-column-numbers",  // エラー箇所の列番号を表示
+        "--no-implicit-optional", //  None へのOptionalアノテーション強制
+        "--strict-equality",  // 厳密な比較を強制
+        "--warn-redundant-casts",  // 不要なキャストを警告
+        "--warn-unused-ignores",  // 未使用の型アノテーションを警告
+        "--check-untyped-defs",  // 型アノテーションのない関数定義をエラーとする
+        // "--plugins=sqlalchemy.ext.mypy.plugin"  // SQLAlchemy用プラグインを有効化(poetry add "sqlalchemy[mypy]"が必要)
+        ],
+    // python unittest設定
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py",
+    ],
+    "python.testing.pytestEnabled": false, // pytestは無効
+    "python.testing.unittestEnabled": true, // unittestは有効
+    // [その他]
+    "files.autoGuessEncoding": true, // 文字コードを自動判定
+    // [その他] Dockerfile
+    "[dockerfile]": {
+        "editor.quickSuggestions": {
+            "strings": true
+        },
+        "editor.formatOnSave": false,
+    },
+    // [その他] shellscript
+    "[shellscript]": {
+        "files.eol": "\n",
+        "editor.formatOnSave": false,
+    },
+}

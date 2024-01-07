@@ -3,7 +3,7 @@
 Dev Containersの環境ができていれば、リポジトリをクローンして、VS Codeで開けば使える状態になります。
 
 # 環境情報
-- Python：3.11
+- Python：3.12
 - パッケージ管理： poetry
 - Linter: flake8、mypy
 - Formatter: autopep8

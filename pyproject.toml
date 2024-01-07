@@ -6,7 +6,7 @@ authors = ["Kei198403 <74121135+Kei198403@users.noreply.github.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.12"
 fastapi = "^0.97.0"
 pydantic = "^1.10.9"
 uvicorn = "^0.22.0"

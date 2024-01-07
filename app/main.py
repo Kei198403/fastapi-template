@@ -1,9 +1,57 @@
 # -*- coding: utf-8 -*-
 
 import os
+import pathlib
+import importlib
+from os.path import dirname, join, sep
 
-from fastapi import FastAPI
+from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
+
+
+def get_submodules(name: str) -> Generator[str, None, None]:
+    """指定したモジュール配下のサブモジュールを取得するジェネレータ
+
+    :name: 対象モジュール名
+    """
+
+    # 起点となるモジュールを取得。
+    root_module = importlib.import_module(name)
+    # 対象モジュールには__init__.pyが必要。
+    # __init__.pyが存在しない場合、AssertionErrorが発生する。
+    assert root_module.__file__ is not None
+    root_module_dir = dirname(root_module.__file__)
+    top_dir = pathlib.Path(root_module_dir).parent
+
+    for root, _, files in os.walk(root_module_dir):
+        for f in files:
+            if not f.endswith(".py"):
+                continue
+
+            path = join(root, f)
+
+            # パス名からモジュール名を生成
+            module_name = path.replace(".py", "") \
+                .replace(str(top_dir), "") \
+                .replace(sep, ".") \
+                .replace(".__init__", "")
+
+            if module_name.startswith("."):
+                module_name = module_name[1:]
+
+            yield module_name
+
+
+def include_routers(app: FastAPI) -> None:
+    """routersモジュール配下のサブモジュールを読み込んで、APIRouterを登録する。
+
+    :app: FastAPIインスタンス
+    """
+    for module_name in get_submodules("routers"):
+        module = importlib.import_module(module_name)
+        for obj in module.__dict__.values():
+            if isinstance(obj, APIRouter):
+                app.include_router(obj)
 
 
 def create_app() -> FastAPI:
@@ -30,6 +78,9 @@ def create_app() -> FastAPI:
             allow_methods=["GET", "HEAD", "POST"],
             allow_headers=["*"],
         )
+
+    # routers配下のAPIRouterのオブジェクトを探して登録する
+    include_routers(app)
 
     return app
 

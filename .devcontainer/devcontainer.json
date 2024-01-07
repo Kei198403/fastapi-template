@@ -8,7 +8,10 @@
 		"vsc-fastapi_template",
 		// ホスト名
 		"-h",
-		"python-dev"
+		"python-dev",
+		// devcontainer.jsonと同じディレクトリにある.envを読み込む
+		// "--env-file",
+		// ".env"
 	],
 	"build": {
 		"dockerfile": "Dockerfile"

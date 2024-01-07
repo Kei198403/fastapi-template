@@ -1,11 +1,11 @@
 # Pythonのバージョンを変える場合はイメージを変更する
-FROM python:3.11-slim-bookworm
+FROM python:3.12-slim-bookworm
 
 USER root
 
 # sudoとmakeを利用できるようにする
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends sudo build-essential
+    && apt-get -y install --no-install-recommends sudo build-essential git
 
 RUN groupadd -g 1000 developer && \
     useradd -u 1000 -g developer -G sudo -m -s /bin/bash vscode && \
